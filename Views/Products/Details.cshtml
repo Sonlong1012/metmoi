@@ -1,0 +1,42 @@
+﻿@model Webbanhang_22011267.Models.Product
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<h1>Details</h1>
+<table>
+    <thead>
+        <tr>
+            <th>DanhMucID</th>
+            <th>Ten</th>
+            <th>Gia</th>
+            <th>SoLuong</th>
+            <th>NgayNhap</th>
+            <th>ThuongHieu</th>
+            <th>MoTa</th>
+            <th>Hinh</th>
+        </tr>
+    </thead>
+    <tbody>
+
+        <tr>
+            <td>@Html.DisplayFor(model => model.DanhMucID)</td>
+            <td>@Html.DisplayFor(model => model.Ten)</td>
+            <td>@Html.DisplayFor(model => model.Gia)</td>
+            <td>@Html.DisplayFor(model => model.SoLuong)</td>
+            <td>@Html.DisplayFor(model => model.NgayNhap)</td>
+            <td>@Html.DisplayFor(model => model.ThuongHieu)</td>
+            <td>@Html.DisplayFor(model => model.MoTa)</td>
+            <td> <img src="~/@Model.Hinh" alt="image" /></td>
+        </tr>
+    </tbody>
+</table>
+
+ <div>
+    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div> 

@@ -1,0 +1,103 @@
+﻿@*  @Model IEnumerable<Webbanhang_22011267.Models.Product>  *@
+@model List<Webbanhang_22011267.Models.Product>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card-columns">
+    @foreach (var product in Model)
+    {
+        <div class=card>
+            <h3 class="card-header">@product.Ten</h3>
+            <div class="card-body" style="height: 150px;">
+                @product.MoTa
+            </div>
+            <div class="card-footer">
+                <span class="text-muted">@(product.Gia) VND</span>
+                <a asp-route="addcart"
+                   asp-route-productid="@product.Id"
+                   class="btn btn-secondary btn-sm float-right">Đặt hàng</a>
+            </div>
+        </div>
+    }
+
+</div>
+@* @await Html.PartialAsync("_CartPartial")
+ *@
+@* <h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+
+ <table class="table">
+  <thead>
+     
+            <tr>
+                <th>
+                    DanhmucID
+                </th>
+                <th>
+                    Ten
+                </th>
+                <th>
+                    Gia
+                </th>
+                <th>
+                    SoLuong
+                </th>
+                <th>
+                    NgayNhap
+                </th>
+                <th>
+                    ThuongHieu
+                </th>
+                <th>
+                    MoTa
+                </th>
+                <th>
+                    Hinh
+                </th>
+                
+            </tr>
+    </thead>
+    <tbody> 
+@for (int i = 0; i < Model.Count; i++)
+        {
+            <tr>
+                <td>
+                        @Model[i].DanhMucID
+                </td>
+                <td>
+                        @Model[i].Ten
+                </td>
+                <td>
+                        @Model[i].Gia
+                </td>
+                <td>
+                        @Model[i].SoLuong
+                </td>
+                <td>
+                        @Model[i].NgayNhap
+                </td>
+                <td>
+                        @Model[i].ThuongHieu
+                </td>
+                <td>
+                       @Model[i].MoTa
+                </td>
+                <td>
+                        <img src="~/@Model[i].Hinh" alt="Hình ảnh" width="100" height="100" />
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@Model[i].Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@Model[i].Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@Model[i].Id">Delete</a>
+                </td>
+            </tr>
+        }
+   </tbody>
+</table> 
+ *@

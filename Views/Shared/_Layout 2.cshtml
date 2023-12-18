@@ -1,0 +1,46 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Webbanhang_22011267</title>
+   @*  @model List<Webbanhang_22011267.Models.Product> *@
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/Webbanhang_22011267.styles.css" asp-append-version="true" />
+</head>
+<body>
+   
+    <div class="card-columns">
+        @foreach (var product in Model)
+        {
+            <div class=card>
+                <h3 class="card-header">@product.Ten</h3>
+                <div class="card-body" style="height: 150px;">
+                    @product.MoTa
+                </div>
+                <div class="card-footer">
+                    <span class="text-muted">@(product.Gia.ToString("n0")) VND</span>
+                    <a asp-route="addcart"
+                       asp-route-productid="@product.Id"
+                       class="btn btn-secondary btn-sm float-right">Đặt hàng</a>
+                </div>
+            </div>
+        }
+       
+    </div>
+    @await Html.PartialAsync("_CartPartial")
+
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+   
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
