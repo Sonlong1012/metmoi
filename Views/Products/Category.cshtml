@@ -11,17 +11,7 @@
         <div id="templatemo_content_right">
         @foreach (var p in Model)
         {
-            <div class="templatemo_product_box">
-                <h1>@p.Ten<span>(by Best Author)</span></h1>
-                <img src="~/@p.Hinh" alt="image" />
-                <div class="product_info">
-                    <p>Etiam luctus. Quisque facilisis suscipit elit. Curabitur...</p>
-                    <h3>@p.Gia</h3>
-                    <div class="buy_now_button"><a href="subpage.html">Buy Now</a></div>
-                    <div class="detail_button"><a href="@Url.Action("Details","Products", new {id=@p.Id})">Detail</a></div>
-                </div>
-                <div class="cleaner">&nbsp;</div>
-            </div>
+            <partial name="_Product" model="p"/>
         }
  <div class="cleaner_with_height">&nbsp;</div>
 

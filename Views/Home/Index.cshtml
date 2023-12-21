@@ -31,32 +31,23 @@
 
            
 </style>
-
+    @* /Shared/_Product.cshtml 
+        Dung foreach de hien ra nhiu san pham
+    *@
     @foreach (var p in Model)
     {
+        <partial name="_Product" model="p" />
+     
 
-        
-
-       <div class="templatemo_product_box">
-            <h1>@p.Ten<span>(by Best Author)</span></h1>
-            <img src="~/@p.Hinh" alt="image" />
-            <div class="product_info">
-                <p>Etiam luctus. Quisque facilisis suscipit elit. Curabitur...</p>
-                <h3>@p.Gia</h3>
-                <div class="buy_now_button"><a href="subpage.html">Buy Now</a></div>
-                <div class="detail_button"><a href="Products/Details/@p.Id">Detail</a></div>
-            </div>
-       </div>
-      
-       
     }
     <div class="cleaner_with_height">&nbsp;</div>
     <a href="subpage.html"><img src="~/assets/images/templatemo_ads.jpg" alt="ads" /></a>
     
 </div>  <!-- end of content right -->
 
-
+@* 
 @foreach (var p in Model)
 {
     <partial name="_Product" model="p"/>
 }
+ *@

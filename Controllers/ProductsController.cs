@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.CodeAnalysis;
@@ -17,17 +18,23 @@ namespace Webbanhang_22011267.Controllers
     {
         private readonly ILogger<ProductsController> _logger;
         private readonly AppDBContext _context;
-        
+        private readonly IHttpContextAccessor contx;
 
-        public ProductsController(ILogger<ProductsController> logger, AppDBContext context)
+
+
+        public ProductsController(ILogger<ProductsController> logger, IHttpContextAccessor httpContextAccessor, AppDBContext context)
         {
             _logger = logger;
-            _context = context;
+           this._context = context;
+            contx = httpContextAccessor;
+
         }
 
         // GET: Products
         public async Task<IActionResult> Index()
         {
+            //contx.HttpContext.Session.SetString("StudentName", "John");
+
             var products = _context.Products.ToList();
             //return _context.Products != null ? 
             //              View(await _context.Products.ToListAsync()) :
@@ -35,27 +42,102 @@ namespace Webbanhang_22011267.Controllers
             return View(products);
         }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         /// Thêm sản phẩm vào cart
-        [Route("addcart/{productid:int}")]
+        [Route("addcart/{productid:int}", Name = "addcart")]
         public IActionResult AddToCart([FromRoute] int productid)
         {
-
-            var product = _context.Products
-                            .Where(p => p.Id == productid)
-                            .FirstOrDefault();
-            if (product == null)
-                return NotFound("Không có sản phẩm");
+            
+                var product = this._context.Products
+                          .Where(p => p.Id == productid)
+                          .FirstOrDefault();
+                if (product == null)
+                    return NotFound("Không có sản phẩm");
 
             // Xử lý đưa vào Cart ...
+            var cart = GetCartItems();
+            var cartitem = cart.Find(p => p.product.Id == productid);
+            if (cartitem != null)
+            {
+                // Đã tồn tại, tăng thêm 1
+                cartitem.quantity++;
+            }
+            else
+            {
+                //  Thêm mới
+                cart.Add(new CartItem() { quantity = 1, product = product });
+            }
 
+            // Lưu cart vào Session
+            SaveCartSession(cart);
 
             return RedirectToAction(nameof(Cart));
+
+            //return View(GetCartItems());
+
+
+
         }
+        /// xóa item trong cart
+        [Route("/removecart/{productid:int}", Name = "removecart")]
+        public IActionResult RemoveCart([FromRoute] int productid)
+        {
+
+            var cart = GetCartItems();
+            var cartitem = cart.Find(p => p.product.Id == productid);
+            if (cartitem != null)
+            {
+                // Đã tồn tại, tăng thêm 1
+                cart.Remove(cartitem);
+            }
+
+            SaveCartSession(cart);
+            return RedirectToAction(nameof(Cart));
+        }
+
+        /// Cập nhật
+        [Route("/updatecart", Name = "updatecart")]
+        [HttpPost]
+        public IActionResult UpdateCart([FromForm] int productid, [FromForm] int quantity)
+        {
+            // Cập nhật Cart thay đổi số lượng quantity ...
+            var cart = GetCartItems();
+            var cartitem = cart.Find(p => p.product.Id == productid);
+            if (cartitem != null)
+            {
+                // Đã tồn tại, tăng thêm 1
+                cartitem.quantity = quantity;
+            }
+            SaveCartSession(cart);
+            // Trả về mã thành công (không có nội dung gì - chỉ để Ajax gọi)
+            return Ok();
+        }
+
 
         // Hiện thị giỏ hàng
         [Route("/cart", Name = "cart")]
         public IActionResult Cart()
         {
+            return View(GetCartItems());
+        }
+
+        [Route("/checkout")]
+        public IActionResult CheckOut()
+        {
+            // Xử lý khi đặt hàng
             return View();
         }
 
@@ -89,6 +171,36 @@ namespace Webbanhang_22011267.Controllers
             string jsoncart = JsonConvert.SerializeObject(ls);
             session.SetString(CARTKEY, jsoncart);
         }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         // GET: Products/Details/5
         public async Task<IActionResult> Details(int? id)

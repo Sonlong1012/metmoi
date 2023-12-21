@@ -1,19 +1,43 @@
 ﻿
-@*
-    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+@model Webbanhang_22011267.Models.Product
+@* Goi Model Product
+Hien ra mot san pham 
+Goi partial view tới những nơi cần dùng để tránh sự lặp lại
+Home/List, Product/index, Home/Index để foreach duyệt ra từng item của Partial view
 *@
-<div id="templatemo_content_right">
+@* <div id="templatemo_content_right">
 
     <div class="templatemo_product_box">
         <h1>Photography  <span>(by Best Author)</span></h1>
-        <img src="~/assets/images/templatemo_image_01.jpg" alt="image" />
+        <img src="~/@Model.Hinh" alt="image" />
         <div class="product_info">
-            <p>Etiam luctus. Quisque facilisis suscipit elit. Curabitur...</p>
-            <h3>$55</h3>
-            <div class="buy_now_button"><a href="subpage.html">Buy Now</a></div>
+            <p>@Model.Ten</p>
+            <h3>$@Model.Gia</h3>
+            <div class="buy_now_button">
+                <a asp-route="addcart"
+                   asp-route-productid="">Buy Now</a>
+            </div>
             <div class="detail_button"><a href="subpage.html">Detail</a></div>
         </div>
         <div class="cleaner">&nbsp;</div>
     </div>
 
+</div> *@
+
+@* Hien ra mot san pham o day *@
+<div class="templatemo_product_box">
+    <h1>@Model.Ten<span>(by Best Author)</span></h1>
+    <img src="~/@Model.Hinh" alt="image" />
+    <div class="product_info">
+        <p>Etiam luctus. Quisque facilisis suscipit elit. Curabitur...</p>
+        <h3>@Model.Gia</h3>
+        <div class="buy_now_button">
+            <a asp-route="addcart"
+               asp-route-productid="@Model.Id">Buy Now</a>
+        </div>
+        @* <div class="detail_button"><a href="Products/Details/@Model.Id">Detail</a></div> *@
+        <div class="detail_button"><a asp-action="Details" asp-controller="Products" asp-route-id="@Model.Id">Detail</a></div>
+
+
+    </div>
 </div>
